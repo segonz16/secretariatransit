@@ -1,6 +1,7 @@
 package com.education.transit.rest;
 
 import com.education.transit.models.Infraccion;
+import com.education.transit.models.InfraccionDTO;
 import com.education.transit.models.Matricula;
 import com.education.transit.models.Propietario;
 import com.education.transit.service.InfraccionService;
@@ -45,5 +46,29 @@ public class InfraccionRest {
             errorResponse.put("error", "Ocurrió un error al guardar el propietario.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
+    }
+
+//    @GetMapping("/propietario/{identificacion}")
+//    public ResponseEntity<?> obtenerInfraccionesPorPropietario(@PathVariable String identificacion) {
+//        List<Infraccion> infracciones = infraccionService.findByPropietarioIdentificacion(identificacion);
+//
+//        if (infracciones.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body(Map.of("mensaje", "No hay infracciones para el propietario con identificación " + identificacion));
+//        }
+//
+//        return ResponseEntity.ok(infracciones);
+//    }
+
+    @GetMapping("/propietario/{identificacion}")
+    public ResponseEntity<?> obtenerInfracciones(@PathVariable String identificacion) {
+        List<InfraccionDTO> infracciones = infraccionService.obtenerInfraccionesPorPropietario(identificacion);
+
+        if (infracciones.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("mensaje", "No hay infracciones para el propietario con identificación " + identificacion));
+        }
+
+        return ResponseEntity.ok(infracciones);
     }
 }
